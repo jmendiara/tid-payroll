@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+const prog = require('caporal');
+const pkg = require('../package.json');
+const downloadPayrolls = require('../lib/index');
+
+prog
+  .version(pkg.version)
+  .description(pkg.description)
+  .option('-u, --user <user>', 'Intranet User', prog.STRING, null, true)
+  .option('-p, --pass <pass>', 'Intranet Password', prog.STRING, null, true)
+  .option('-o, --output <dest>', 'Destination folder', prog.STRING, './payrolls')
+  .action(function(args, options, logger) {
+    downloadPayrolls(options, logger)
+      .then(() => process.exit(0))
+      .catch(err =>  {
+        logger.error(err.toString());
+        process.exit(1);
+      });
+  });
+
+prog.parse(process.argv);
+
