@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "bin": "bin/tid-payroll",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pkg . --out-path ./dist"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +16,8 @@
     "fs-extra": "^3.0.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
+  },
+  "devDependencies": {
+    "pkg": "^4.1.0"
   }
 }
