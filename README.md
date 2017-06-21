@@ -1,6 +1,10 @@
 # tid-payroll
 Downloads all your payrolls from TID intranet
 
+## Installation
+
+Go to [Releases pages](releases) and download your distribution
+
 ## Usage
 ```sh
 $> tid-payroll-macos --help
