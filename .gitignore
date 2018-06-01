@@ -60,3 +60,5 @@ typings/
 payrolls
 
 dist
+
+.DS_Store

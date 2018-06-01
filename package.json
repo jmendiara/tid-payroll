@@ -1,6 +1,6 @@
 {
   "name": "tid-payroll",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Downloads all your payrolls from intranet",
   "main": "lib/index.js",
   "bin": "bin/tid-payroll",
