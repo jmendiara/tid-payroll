@@ -1,6 +1,6 @@
 {
   "name": "tid-payroll",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Downloads all your payrolls from intranet",
   "main": "lib/index.js",
   "bin": "bin/tid-payroll",
@@ -18,6 +18,6 @@
     "request-promise": "^4.2.1"
   },
   "devDependencies": {
-    "pkg": "^4.1.0"
+    "pkg": "^5.8.1"
   }
 }
