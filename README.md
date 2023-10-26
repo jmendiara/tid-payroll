@@ -29,3 +29,14 @@ $> tid-payroll-macos --help
      --quiet            Quiet mode - only displays warn and error messages
      -v, --verbose      Verbose mode - will also output debug messages
 ```
+
+## Execute locally
+
+Install NodeJS and Yarn
+
+```sh
+npm install -g yarn
+yarn install
+./bin/tid-payroll --user <user> --pass <pass>
+
+```
