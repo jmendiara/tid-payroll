@@ -6,6 +6,9 @@ Downloads all your payrolls from TID intranet
 Go to [Releases pages](https://github.com/jmendiara/tid-payroll/releases) and download your distribution
 
 ## Usage
+
+> The user and pass are your HI login and the nomina's password, not the @telefonica credentials
+
 ```sh
 $> tid-payroll-macos
 prompt: user:  myuser
