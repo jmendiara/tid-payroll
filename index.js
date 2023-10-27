@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const Promise = require('bluebird');
 const $ = require('cheerio');
+const prompt = require('prompt');
 
 const PAYROLLS_BASEURL = 'https://pr-sitid-1-mad.hi.inet:444';
 const PAYROLLS_RECIBOS_URL = `${PAYROLLS_BASEURL}/servlet/com.tid.nominaelectronica.ConsultaRecibos`;
@@ -12,10 +13,34 @@ const PAYROLLS_NOMINA_URL = `${PAYROLLS_BASEURL}/servlet/com.tid.nominaelectroni
 const UNTIL_YEAR = 2002;
 //const UNTIL_YEAR = 2023;
 
-class MissingPayroll extends Error {};
+run().catch(async function(err) {
+  console.error(err.message);
+  console.error(`Press any key to exit...`);
+  // with double click execution, the console closes immediately
+  // allow feedback to the user before closing the console showing there was an error
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on('data', process.exit.bind(process, 1));  
+});
 
-module.exports = function downladPayrolls(options, logger) {
-  const { user, pass, output} = options;
+async function run() {
+  const { user, pass } = await prompt.get([
+    {
+      name: 'user',
+      required: true
+    }, 
+    {
+      name: 'pass',
+      hidden: true,
+      required: true
+    }
+  ]);
+  await downladPayrolls({ user, pass, output: './payrolls' });
+}
+
+async function downladPayrolls(options) {
+  const { user, pass, output } = options;
+
   const request = req.defaults({
     auth: { user, pass },
     strictSSL: false
@@ -29,7 +54,7 @@ module.exports = function downladPayrolls(options, logger) {
     .map(page => getPayrollsInPage(page))
     .reduce((a, b) => a.concat(b)) // flatten
     .tap(() => console.info('Downloading payrolls...'))
-    .map(payroll => downloadPayroll(payroll))
+    .map(payroll => downloadPayroll(payroll), { concurrency: 5 })
     .tap(downloaded => console.info(`Downloaded ${downloaded.length} payroll docs to ${output}`));
 
   ///////////////
@@ -45,22 +70,18 @@ module.exports = function downladPayrolls(options, logger) {
 
         let name = $link.text().trim();
         if (!name) {
-          throw new MissingPayroll(`Cannot find payroll doc name in ${year}`);
+          throw new Error(`Cannot find payroll doc name in ${year}`);
         }
-
-        // <a href="#" onclick="javascript:abreRecibo('18027821','/html/rrhh/nominaelectronica/ficheros/2022/paga_extra_verano/m18027821-1.enc');">
 
         const PAYROLL_REGEX = /abreRecibo\(.*'(.*?)','(.*?)'\).*/g;
         let match = PAYROLL_REGEX.exec($link.attr('onclick'));
 
         if (!match || !match[1] || !match[2]) {
-          throw new MissingPayroll(`Cannot find link in ${year} for ${name}: ${$link}`);
+          throw new Error(`Cannot find link in ${year} for ${name}: ${$link}`);
         }
 
         let dni = match[1];
         let link = match[2];
-        console.debug(`Found ${link}`);
-
         let url = `${PAYROLLS_NOMINA_URL}?dni=${dni}&url=${link}`;
 
         res.push({ year, name, url });

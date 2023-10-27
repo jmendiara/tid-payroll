@@ -7,36 +7,16 @@ Go to [Releases pages](https://github.com/jmendiara/tid-payroll/releases) and do
 
 ## Usage
 ```sh
-$> tid-payroll-macos --help
-
-   tid-payroll 1.0.0 - Downloads all your payrolls from intranet
-
-   USAGE
-
-     tid-payroll
-
-   OPTIONS
-
-     -u, --user <user>        Intranet User           required
-     -p, --pass <pass>        Intranet Password       required
-     -o, --output <dest>      Destination folder      optional      default: "./payrolls"
-
-   GLOBAL OPTIONS
-
-     -h, --help         Display help
-     -V, --version      Display version
-     --no-color         Disable colors
-     --quiet            Quiet mode - only displays warn and error messages
-     -v, --verbose      Verbose mode - will also output debug messages
+$> tid-payroll-macos
+prompt: user:  myuser
+prompt: pass:  ******** 
 ```
 
-## Execute locally
+all the payrolls will be downloaded to `payrolls` directory
 
-Install NodeJS and Yarn
+## Execute development version locally
 
 ```sh
-npm install -g yarn
-yarn install
-./bin/tid-payroll --user <user> --pass <pass>
-
+npm i
+npm start
 ```
